@@ -1,29 +1,23 @@
-name: Python CI (Pytest)
-
-on:
-  push:
-    branches: [ "main", "master" ]
-  pull_request:
-    branches: [ "main", "master" ]
+name: CI Python Workflow
+on: [push]
 
 jobs:
-  build-and-test:
+  build:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Copiar el codigo del repositorio
-      uses: actions/checkout@v4
-
-    - name: Configurar entorno Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.11'
-
-    - name: Instalar dependencias
-      run: |
-        python -m pip install --upgrade pip
-        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-
-    - name: Ejecutar pruebas con Pytest
-      run: |
-        pytest
+      - uses: actions/checkout@v5
+      
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.11' # Explicitly set your Python version
+          
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest
+          # If you have a requirements file, uncomment the line below:
+          # pip install -r requirements.txt
+          
+      - name: Run Tests
+        run: pytest
